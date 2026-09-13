@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>सहारा - वरिष्ठ नागरिकों का डिजिटल साथी</title>
+  <!-- Google Fonts: Hindi friendly font + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Ready4Launch runtime monitor -->
+  <script>
+    window.onerror = function(msg, src, line, col, err) {
+      try {
+        fetch('https://your-actual-render-url.onrender.com/api/telemetry/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            appPath: window.location.pathname,
+            errorMsg: msg,
+            source: src,
+            line: line,
+            stackTrace: err ? err.stack : ''
+          })
+        });
+      } catch (_) {}
+      return true; // suppress visual error overlay
+    };
+  </script>
+</head>
+<body>
+
+  <!-- Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Accessibility Controls Floating Bar -->
+  <div class="accessibility-bar" id="accessibility-bar">
+    <span class="acc-label">📋 टेक्स्ट साइज़ (अक्षर आकार):</span>
+    <button class="acc-btn" id="btn-font-sub" title="छोटा करें" aria-label="अक्षर का आकार छोटा करें">A-</button>
+    <button class="acc-btn" id="btn-font-reset" title="सामान्य आकार" aria-label="सामान्य आकार">A</button>
+    <button class="acc-btn" id="btn-font-add" title="बड़ा करें" aria-label="अक्षर का आकार बड़ा करें">A+</button>
+    <button class="acc-btn voice-btn" id="btn-voice-read" title="स्क्रीन पढ़कर सुनाएँ" aria-label="स्क्रीन पढ़कर सुनाएँ">
+      🔊 पढ़ें
+    </button>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container container">
+      <a href="#hero" class="brand">
+        <span class="brand-icon">❤️</span>
+        <span class="brand-text">सहारा <span class="badge">वरिष्ठ केयर</span></span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#hero" class="nav-link active">मुख्य पृष्ठ</a>
+        <a href="#medicines" class="nav-link">दवाइयाँ</a>
+        <a href="#emergency" class="nav-link">आपातकालीन SOS</a>
+        <a href="#vitals" class="nav-link">स्वास्थ्य ट्रैकर</a>
+        <a href="#wellness" class="nav-link">व्यायाम व संगीत</a>
+        <a href="#services" class="nav-link">होम सर्विस</a>
+      </nav>
+
+      <button class="btn btn-sos-nav" id="quick-sos-btn">
+        🚨 SOS मदद
+      </button>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="मेनू खोलें">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- PATTERN 1: HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="container hero-content">
+        <div class="welcome-badge animate">
+          <span>🌅 शुभ प्रभात! आज का दिन मंगलमय हो</span>
+        </div>
+        <h1 class="headline animate">आपकी सुरक्षा और स्वास्थ्य का सबसे सरल साथी</h1>
+        <p class="hero-desc animate">
+          विशेष रूप से हमारे बुज़ुर्गों के लिए डिज़ाइन किया गया आसान ऐप। समय पर दवाइयाँ, 1-क्लिक इमरजेंसी SOS, आसान स्वास्थ्य ट्रैकर और घरेलू सेवाएँ।
+        </p>
+
+        <!-- Large Action Cards for Senior Citizens -->
+        <div class="hero-quick-actions animate">
+          <button class="hero-action-card emergency-card" id="hero-sos-trigger">
+            <span class="action-icon">🚨</span>
+            <div class="action-text">
+              <h3>आपातकालीन SOS</h3>
+              <p>तुरंत परिजनों व डॉक्टर को कॉल करें</p>
+            </div>
+          </button>
+
+          <a href="#medicines" class="hero-action-card medicine-card">
+            <span class="action-icon">💊</span>
+            <div class="action-text">
+              <h3>आज की दवाइयाँ</h3>
+              <p><span id="pending-pills-count">3</span> दवाइयाँ लेना बाकी है</p>
+            </div>
+          </a>
+
+          <a href="#vitals" class="hero-action-card vitals-card">
+            <span class="action-icon">🩺</span>
+            <div class="action-text">
+              <h3>बीपी व शुगर मापें</h3>
+              <p>आज का रिकॉर्ड दर्ज करें</p>
+            </div>
+          </a>
+
+          <a href="#wellness" class="hero-action-card audio-card">
+            <span class="action-icon">🎵</span>
+            <div class="action-text">
+              <h3>भजन व संगीत</h3>
+              <p>मन की शांति के लिए सुनें</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: MEDICINES & REMINDERS -->
+    <section class="section" id="medicines">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">समय पर देखभाल</div>
+          <h2 class="section-title">दवाइयाँ और दैनिक रिमाइंडर</h2>
+          <p class="section-subtitle">आपकी रोज़ाना की दवाइयों की सूची। ली गई दवाइयों पर टिक (✓) करें।</p>
+        </div>
+
+        <div class="medicines-grid">
+          <!-- Left: Daily Schedule Card -->
+          <div class="card medicine-schedule-card">
+            <div class="card-header-flex">
+              <h3>📅 आज का समय-सारणी (<span id="current-date-str"></span>)</h3>
+              <button class="btn btn-ghost btn-sm" id="open-med-modal">+ नई दवा जोड़ें</button>
+            </div>
+
+            <div class="time-tabs">
+              <button class="tab-btn active" data-time="all">सभी</button>
+              <button class="tab-btn" data-time="morning">🌅 सुबह</button>
+              <button class="tab-btn" data-time="afternoon">☀️ दोपहर</button>
+              <button class="tab-btn" data-time="evening">🌙 रात</button>
+            </div>
+
+            <div class="med-list" id="med-list-container">
+              <!-- Loaded via JS -->
+            </div>
+          </div>
+
+          <!-- Right: Prescription Quick View & Refill -->
+          <div class="card refill-card">
+            <h3>📦 दवा खत्म होने वाली है?</h3>
+            <p class="text-muted">निज़ांपेट पास की फ़ार्मेसी से एक क्लिक में दोबारा ऑर्डर करें।</p>
+            
+            <div class="refill-box">
+              <div class="refill-item">
+                <div>
+                  <strong>एमलोडिपाइन (Amlodipine 5mg)</strong>
+                  <div class="text-sm">शेष: केवल 3 गोलियाँ</div>
+                </div>
+                <button class="btn btn-sm order-refill-btn" data-med="Amlodipine 5mg">रिफ़िल मंगाएँ</button>
+              </div>
+
+              <div class="refill-item">
+                <div>
+                  <strong>मेटाफॉर्मिन (Metformin 500mg)</strong>
+                  <div class="text-sm">शेष: केवल 5 गोलियाँ</div>
+                </div>
+                <button class="btn btn-sm order-refill-btn" data-med="Metformin 500mg">रिफ़िल मंगाएँ</button>
+              </div>
+            </div>
+
+            <div class="doctor-note">
+              <span>👨‍⚕️ डॉक्टर की सलाह: "दवा हमेशा हल्के गुनगुने पानी के साथ भोजन के बाद लें।"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: EMERGENCY SOS & CONTACTS -->
+    <section class="section bg-alt" id="emergency">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag emergency-tag">24x7 सुरक्षा मदद</div>
+          <h2 class="section-title">आपातकालीन SOS व महत्त्वपूर्ण संपर्क</h2>
+          <p class="section-subtitle">किसी भी आपात स्थिति में नीचे दिए गए बड़े बटन को दबाएँ या परिवार को सूचित करें।</p>
+        </div>
+
+        <div class="sos-banner card">
+          <div class="sos-banner-content">
+            <div class="sos-pulse-icon">🚨</div>
+            <div>
+              <h3>इमरजेंसी सहायता बटन (SOS)</h3>
+              <p>इस बटन को दबाते ही आपकी लोकेशन के साथ आपातकालीन अलर्ट निकटतम अस्पताल और आपके प्रियजनों को चला जाएगा।</p>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-lg" id="big-sos-button">
+            🚨 इमरजेंसी अलार्म बजाएँ
+          </button>
+        </div>
+
+        <div class="contacts-grid">
+          <!-- Contact 1 -->
+          <div class="card contact-card">
+            <div class="contact-avatar">👩</div>
+            <div class="contact-info">
+              <h4>प्रियंका शर्मा (पुत्री)</h4>
+              <p class="contact-role">प्राथमिक आपातकालीन संपर्क</p>
+              <div class="contact-phone">+91 98765 43210</div>
+            </div>
+            <a href="tel:+919876543210" class="btn btn-ghost call-btn">📞 कॉल करें</a>
+          </div>
+
+          <!-- Contact 2 -->
+          <div class="card contact-card">
+            <div class="contact-avatar">👨</div>
+            <div class="contact-info">
+              <h4>अमित शर्मा (पुत्र)</h4>
+              <p class="contact-role">द्वितीयक संपर्क (निज़ांपेट)</p>
+              <div class="contact-phone">+91 98123 45678</div>
+            </div>
+            <a href="tel:+919812345678" class="btn btn-ghost call-btn">📞 कॉल करें</a>
+          </div>
+
+          <!-- Contact 3 -->
+          <div class="card contact-card">
+            <div class="contact-avatar">🩺</div>
+            <div class="contact-info">
+              <h4>डॉ. राजेश वर्मा (हृदय रोग विशेषज्ञ)</h4>
+              <p class="contact-role">अपोलो क्लिनिक, निज़ांपेट</p>
+              <div class="contact-phone">+91 40 2345 6789</div>
+            </div>
+            <a href="tel:+914023456789" class="btn btn-ghost call-btn">📞 कॉल करें</a>
+          </div>
+
+          <!-- Contact 4 -->
+          <div class="card contact-card">
+            <div class="contact-avatar">🚑</div>
+            <div class="contact-info">
+              <h4>108 एम्बुलेंस सेवा</h4>
+              <p class="contact-role">तेलंगाना सरकार आपातकालीन 24/7</p>
+              <div class="contact-phone">108</div>
+            </div>
+            <a href="tel:108" class="btn btn-danger call-btn">🚑 तुरंत 108 मिलाएँ</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: HEALTH VITALS TRACKER -->
+    <section class="section" id="vitals">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">स्वास्थ्य मॉनिटर</div>
+          <h2 class="section-title">दैनिक स्वास्थ्य ट्रैकर</h2>
+          <p class="section-subtitle">अपना रक्तचाप (BP), शुगर लेवल और पानी का सेवन आसानी से नोट करें।</p>
+        </div>
+
+        <div class="vitals-layout">
+          <!-- Vitals Input Form -->
+          <div class="card vitals-form-card">
+            <h3>📝 आज के आंकड़े दर्ज करें</h3>
+            <form id="vitals-form">
+              <div class="form-group">
+                <label for="vital-bp">रक्तचाप (BP - Systolic / Diastolic):</label>
+                <div class="input-inline">
+                  <input type="number" id="vital-sys" placeholder="120" min="70" max="220" required>
+                  <span class="slash">/</span>
+                  <input type="number" id="vital-dia" placeholder="80" min="40" max="140" required>
+                  <span class="unit">mmHg</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vital-sugar">ब्लड शुगर (रक्त शर्करा):</label>
+                <div class="input-inline">
+                  <input type="number" id="vital-sugar" placeholder="110" min="50" max="500" required>
+                  <select id="sugar-type">
+                    <option value="खाली पेट (Fasting)">खाली पेट</option>
+                    <option value="खाना खाने के बाद (PP)">खाने के बाद</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vital-water">आज कितना पानी पिया (ग्लास में):</label>
+                <div class="water-counter">
+                  <button type="button" class="btn-step" id="water-minus">-</button>
+                  <span id="water-count-display">5</span> ग्लास (लगभग 1.25L)
+                  <button type="button" class="btn-step" id="water-plus">+</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-block">💾 रिकॉर्ड सुरक्षित करें</button>
+            </form>
+          </div>
+
+          <!-- History Logs & Status Summary -->
+          <div class="card vitals-log-card">
+            <h3>📊 हाल के स्वास्थ्य रिकॉर्ड</h3>
+            <div id="vitals-history-list" class="vitals-history">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: WELLNESS & AUDIO ENTERTAINMENT -->
+    <section class="section bg-alt" id="wellness">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">मन और शरीर की शांति</div>
+          <h2 class="section-title">सरल व्यायाम, योग और भजन</h2>
+          <p class="section-subtitle">बुज़ुर्गों के लिए सुरक्षित हल्की कसरत और मधुर धार्मिक संगीत।</p>
+        </div>
+
+        <!-- Audio Player Simulation Card -->
+        <div class="card audio-player-card">
+          <div class="player-top">
+            <div class="song-disc" id="disc-anim">🎵</div>
+            <div class="song-info">
+              <h3 id="current-song-title">गायत्री मंत्र और ध्यान संगीत</h3>
+              <p id="current-song-artist">शांति और तनाव मुक्ति के लिए</p>
+            </div>
+          </div>
+          <div class="audio-controls">
+            <button class="audio-btn" id="prev-song-btn">⏮️</button>
+            <button class="audio-btn play-btn" id="play-pause-btn">▶️ चलाएं</button>
+            <button class="audio-btn" id="next-song-btn">⏭️</button>
+          </div>
+          <div class="playlist" id="playlist-container">
+            <!-- Playlist items -->
+          </div>
+        </div>
+
+        <!-- Gentle Senior Exercises Grid -->
+        <div class="exercises-grid">
+          <div class="card exercise-card">
+            <img data-query="senior person performing gentle seated stretch yoga indoor" alt="कुर्सी योग stretch" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <div class="ex-content">
+              <h4>1. कुर्सी योग (Chair Yoga)</h4>
+              <p>कमर दर्द और घुटनों के तनाव को कम करने के लिए कुर्सी पर बैठकर 10 मिनट करें।</p>
+              <button class="btn btn-ghost btn-sm start-ex-btn" data-ex="कुर्सी योग">मार्गदर्शन शुरू करें</button>
+            </div>
+          </div>
+
+          <div class="card exercise-card">
+            <img data-query="elderly Indian couple walking peacefully in green park morning sun" alt="धीमी टहल Walk" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <div class="ex-content">
+              <h4>2. प्राणायाम व अनुलोम-विलोम</h4>
+              <p>फेफड़ों को मज़बूत और रक्तचाप को नियंत्रित रखने हेतु सुबह 15 मिनट सांस का अभ्यास।</p>
+              <button class="btn btn-ghost btn-sm start-ex-btn" data-ex="प्राणायाम">मार्गदर्शन शुरू करें</button>
+            </div>
+          </div>
+
+          <div class="card exercise-card">
+            <img data-query="senior person light arm stretches exercises healthy lifestyle" alt="हाथ और गर्दन के व्यायाम" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <div class="ex-content">
+              <h4>3. गर्दन और कंधों का घुमाव</h4>
+              <p>गर्दन और कंधों की अकड़न दूर करने के लिए दिन में दो बार धीमे-धीमे घुमाएँ।</p>
+              <button class="btn btn-ghost btn-sm start-ex-btn" data-ex="गर्दन घुमाव">मार्गदर्शन शुरू करें</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: ESSENTIAL SERVICES & ASSISTANCE -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">घर पर सुविधा</div>
+          <h2 class="section-title">विश्वसनीय होम केयर और सहायता</h2>
+          <p class="section-subtitle">निज़ांपेट व हैदराबाद क्षेत्र में सत्यापित केयरटेकर, फ़िज़ीओथेरेपिस्ट या लैब टेस्ट बुक करें।</p>
+        </div>
+
+        <div class="services-grid">
+          <div class="card service-card">
+            <div class="service-icon">👨‍⚕️</div>
+            <h3>होम केयर अटेंडेंट</h3>
+            <p>24/7 या 12 घंटे की देखभाल हेतु योग्य मेल/फीमेल केयरगिवर।</p>
+            <div class="service-price">₹800 / दिन से शुरू</div>
+            <button class="btn btn-block book-service-btn" data-service="होम केयर अटेंडेंट">बुकिंग अनुरोध भेजें</button>
+          </div>
+
+          <div class="card service-card">
+            <div class="service-icon">🏃‍♂️</div>
+            <h3>फिजियोथेरेपिस्ट (घर पर)</h3>
+            <p>घुटने, जोड़ों व लकवा उपचार के लिए विशेषज्ञ डॉक्टर का गृह भ्रमण।</p>
+            <div class="service-price">₹650 / विज़िट</div>
+            <button class="btn btn-block book-service-btn" data-service="फिजियोथेरेपिस्ट">बुकिंग अनुरोध भेजें</button>
+          </div>
+
+          <div class="card service-card">
+            <div class="service-icon">🔬</div>
+            <h3>लैब ब्लड टेस्ट (होम सैंपल)</h3>
+            <p>घर बैठे शुगर, थायरॉयड व कम्प्लीट बॉडी चेकअप का सैंपल दें।</p>
+            <div class="service-price">₹499 (15% छूट)</div>
+            <button class="btn btn-block book-service-btn" data-service="होम ब्लड टेस्ट">बुकिंग अनुरोध भेजें</button>
+          </div>
+
+          <div class="card service-card">
+            <div class="service-icon">🚗</div>
+            <h3>वरिष्ठ नागरिक ड्राइवर व कार</h3>
+            <p>अस्पताल या रिश्तेदार के घर सुरक्षित ले जाने हेतु कार व ड्राइवर।</p>
+            <div class="service-price">₹350 / ट्रिप से शुरू</div>
+            <button class="btn btn-block book-service-btn" data-service="ड्राइवर सेवा">बुकिंग अनुरोध भेजें</button>
+          </div>
+        </div>
+
+        <!-- Contact / Help Center Box -->
+        <div class="card contact-center-box">
+          <div class="contact-box-grid">
+            <div>
+              <h3>📞 क्या आपको फॉर्म भरने में कठिनाई है?</h3>
+              <p>हमे सीधे कॉल करें या व्हाट्सएप पर मैसेज भेजें, हमारी टीम आपकी पूरी सहायता करेगी।</p>
+            </div>
+            <div class="contact-center-actions">
+              <a href="tel:+914023456789" class="btn btn-lg">📞 फोन पर बात करें</a>
+              <a href="https://wa.me/914023456789" target="_blank" class="btn btn-ghost btn-lg">💬 व्हाट्सएप करें</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: ADD NEW MEDICINE -->
+  <div class="modal-backdrop" id="med-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>💊 नई दवा जोड़ें</h3>
+        <button class="modal-close" id="close-med-modal">✕</button>
+      </div>
+      <form id="add-med-form">
+        <div class="form-group">
+          <label for="med-name">दवा का नाम:</label>
+          <input type="text" id="med-name" placeholder="उदा. पैरासिटामोल / Paracetamol" required>
+        </div>
+        <div class="form-group">
+          <label for="med-dosage">खुराक (Dosage):</label>
+          <input type="text" id="med-dosage" placeholder="उदा. 1 गोली (500mg)" required>
+        </div>
+        <div class="form-group">
+          <label for="med-time">लेने का समय:</label>
+          <select id="med-time" required>
+            <option value="morning">🌅 सुबह (नाश्ते के बाद)</option>
+            <option value="afternoon">☀️ दोपहर (खाने के बाद)</option>
+            <option value="evening">🌙 रात (सोने से पहले)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-block">दवा जोड़ें</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: BOOK SERVICE FORM -->
+  <div class="modal-backdrop" id="service-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="service-modal-title">सेवा बुकिंग</h3>
+        <button class="modal-close" id="close-service-modal">✕</button>
+      </div>
+      <form id="service-booking-form">
+        <input type="hidden" id="booking-service-name">
+        <div class="form-group">
+          <label for="user-name">आपका नाम:</label>
+          <input type="text" id="user-name" placeholder="उदा. रामेश्वर शर्मा" required>
+        </div>
+        <div class="form-group">
+          <label for="user-phone">मोबाइल नंबर:</label>
+          <input type="tel" id="user-phone" placeholder="+91 98765 43210" required>
+        </div>
+        <div class="form-group">
+          <label for="user-address">पता (निज़ांपेट / हैदराबाद):</label>
+          <textarea id="user-address" rows="2" placeholder="मकान नं., रोड नं., निज़ांपेट, हैदराबाद" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="booking-date">पसंदीदा तारीख:</label>
+          <input type="date" id="booking-date" required>
+        </div>
+        <button type="submit" class="btn btn-block">अनुरोध जमा करें</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SOS ALARM OVERLAY MODAL -->
+  <div class="modal-backdrop emergency-overlay" id="sos-modal">
+    <div class="modal-card sos-alert-card">
+      <div class="sos-siren">🚨</div>
+      <h2>आपातकालीन अलर्ट सक्रिय!</h2>
+      <p>आपकी वर्तमान लोकेशन (निज़ांपेट, हैदराबाद - 500090) और SOS संदेश आपके पारिवारिक संपर्कों व आपातकालीन सेवा 108 को भेजा जा रहा है...</p>
+      
+      <div class="sos-timer-box">
+        अलर्ट रद्द करने के लिए बचा समय: <span id="sos-countdown">5</span> सेकंड
+      </div>
+
+      <div class="sos-actions">
+        <button class="btn btn-danger btn-lg" id="confirm-sos-btn">📞 तुरंत कॉल करें (108)</button>
+        <button class="btn btn-ghost btn-lg" id="cancel-sos-btn">गलती से दबा? रद्द करें</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h3>❤️ सहारा वरिष्ठ सहायता</h3>
+        <p>निज़ांपेट, हैदराबाद – 500090, तेलंगाना, भारत</p>
+        <p>हेल्पलाइन: +91 40-2345-6789 | ईमेल: hello@sahara-senior.in</p>
+      </div>
+      <div class="footer-copy">
+        &copy; <span id="year-str"></span> सहारा वरिष्ठ सेवाएँ। वरिष्ठ नागरिकों की सुरक्षा व सम्मान में समर्पित।
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+<script data-r4l-image-resolver>
+(()=>{
+  const fallback=(img)=>{
+    if(img.dataset.r4lFallback)return;
+    img.dataset.r4lFallback='1';
+    const label=/^[\x20-\x7E]*$/.test(img.alt||'')?img.alt:'Image';
+    img.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(label||'Image');
+  };
+  const resolve=async(img)=>{
+    if(!img || img.dataset.r4lResolving || (img.getAttribute('src')||'').trim())return;
+    img.dataset.r4lResolving='1';
+    const query=img.dataset.query||img.alt||'professional product photo';
+    const entity=img.dataset.entity;
+    try{
+      if(entity){
+        const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(entity));
+        if(r.ok){const j=await r.json();const src=(j.originalimage&&j.originalimage.source)||(j.thumbnail&&j.thumbnail.source);if(src){img.src=src;return;}}
+      }
+      const r=await fetch('https://api.openverse.org/v1/images/?q='+encodeURIComponent(query)+'&page_size=1&mature=false');
+      if(r.ok){const j=await r.json(),hit=j.results&&j.results[0],src=hit&&(hit.thumbnail||hit.url);if(src){img.src=src;return;}}
+      img.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(query)+'?width=600&height=400&nologo=true';
+    }catch(_){img.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(query)+'?width=600&height=400&nologo=true';}
+  };
+  const scan=(root=document)=>root.querySelectorAll('img[data-query],img[data-entity],img:not([src]),img[src=""]').forEach(resolve);
+  document.addEventListener('DOMContentLoaded',()=>scan());
+  new MutationObserver(records=>records.forEach(record=>record.addedNodes.forEach(node=>{
+    if(node.nodeType!==1)return;
+    if(node.matches&&node.matches('img'))resolve(node);
+    scan(node);
+  }))).observe(document.documentElement,{childList:true,subtree:true});
+  document.addEventListener('error',event=>{
+    const img=event.target;
+    if(img&&img.tagName==='IMG'&&(img.dataset.query||img.dataset.entity)){
+      if(!img.dataset.r4lRetried){img.dataset.r4lRetried='1';delete img.dataset.r4lResolving;img.removeAttribute('src');resolve(img);}else fallback(img);
+    }
+  },true);
+})();
+</script></body>
+</html>
