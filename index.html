@@ -29,6 +29,26 @@
       return true; // suppress visual error overlay
     };
   </script>
+
+  <!-- Ready4Launch runtime monitor -->
+  <script>
+    window.onerror = function(msg, src, line, col, err) {
+      try {
+        fetch('https://your-actual-render-url.onrender.com/api/telemetry/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            appPath: window.location.pathname,
+            errorMsg: msg,
+            source: src,
+            line: line,
+            stackTrace: err ? err.stack : ''
+          })
+        });
+      } catch (_) {}
+      return true; // suppress visual error overlay
+    };
+  </script>
 </head>
 <body>
 
@@ -344,7 +364,7 @@
         <!-- Gentle Senior Exercises Grid -->
         <div class="exercises-grid">
           <div class="card exercise-card">
-            <img data-query="senior person performing gentle seated stretch yoga indoor" alt="कुर्सी योग stretch" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <img data-query="elderly person doing chair yoga gentle seated stretch indoors" alt="कुर्सी योग Chair Yoga" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
             <div class="ex-content">
               <h4>1. कुर्सी योग (Chair Yoga)</h4>
               <p>कमर दर्द और घुटनों के तनाव को कम करने के लिए कुर्सी पर बैठकर 10 मिनट करें।</p>
@@ -353,7 +373,7 @@
           </div>
 
           <div class="card exercise-card">
-            <img data-query="elderly Indian couple walking peacefully in green park morning sun" alt="धीमी टहल Walk" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <img data-query="senior person practicing pranayama deep breathing exercise meditation indoor" alt="प्राणायाम व अनुलोम विलोम" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
             <div class="ex-content">
               <h4>2. प्राणायाम व अनुलोम-विलोम</h4>
               <p>फेफड़ों को मज़बूत और रक्तचाप को नियंत्रित रखने हेतु सुबह 15 मिनट सांस का अभ्यास।</p>
@@ -362,7 +382,7 @@
           </div>
 
           <div class="card exercise-card">
-            <img data-query="senior person light arm stretches exercises healthy lifestyle" alt="हाथ और गर्दन के व्यायाम" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
+            <img data-query="senior person performing neck stretch and shoulder rotation exercises" alt="गर्दन और कंधों का व्यायाम" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://placehold.co/600x400/1e293b/ffffff?text='+encodeURIComponent(this.alt||'Image');}else{this.onerror=null;}">
             <div class="ex-content">
               <h4>3. गर्दन और कंधों का घुमाव</h4>
               <p>गर्दन और कंधों की अकड़न दूर करने के लिए दिन में दो बार धीमे-धीमे घुमाएँ।</p>
